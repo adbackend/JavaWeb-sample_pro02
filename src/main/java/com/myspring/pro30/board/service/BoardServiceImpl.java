@@ -1,0 +1,32 @@
+package com.myspring.pro30.board.service;
+
+import java.util.List;
+import java.util.Map;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.myspring.pro30.board.dao.BoardDAO;
+import com.myspring.pro30.board.vo.ArticleVO;
+
+@Service("boardService")
+public class BoardServiceImpl implements BoardService{
+
+	@Autowired
+	private BoardDAO boardDAO;
+	
+	@Override
+	public List<ArticleVO> listArticles() throws Exception {
+		
+		List<ArticleVO> articlesList = boardDAO.selectAllArticlesList();
+		
+		return articlesList;
+	}
+
+	@Override
+	public int addNew(Map articleMap) throws Exception {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+}

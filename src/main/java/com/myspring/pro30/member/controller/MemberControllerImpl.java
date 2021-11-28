@@ -81,31 +81,34 @@ public class MemberControllerImpl   implements MemberController {
 	}
 	*/
 	
-	@Override
-	@RequestMapping(value = "/member/login.do", method = RequestMethod.POST)
-	public ModelAndView login(@ModelAttribute("member") MemberVO member,
-				              RedirectAttributes rAttr,
-		                       HttpServletRequest request, HttpServletResponse response) throws Exception {
-	ModelAndView mav = new ModelAndView();
-	memberVO = memberService.login(member);
-	if(memberVO != null) {
-	    HttpSession session = request.getSession();
-	    session.setAttribute("member", memberVO);
-	    session.setAttribute("isLogOn", true);
-	    //mav.setViewName("redirect:/member/listMembers.do");
-	    String action = (String)session.getAttribute("action");
-	    session.removeAttribute("action");
-	    if(action!= null) {
-	       mav.setViewName("redirect:"+action);
-	    }else {
-	       mav.setViewName("redirect:/member/listMembers.do");	
-	    }
 
-	}else {
-	   rAttr.addAttribute("result","loginFailed");
-	   mav.setViewName("redirect:/member/loginForm.do");
-	}
-	return mav;
+	@Override
+	@RequestMapping(value="/member/login.do", method=RequestMethod.POST)
+	public ModelAndView login(@ModelAttribute("member") MemberVO member, RedirectAttributes rAttr,
+								HttpServletRequest request, HttpServletResponse response) throws Exception{
+		
+		ModelAndView mav = new ModelAndView();
+		memberVO = memberService.login(member);
+		
+		if(memberVO!=null) { //로그인 성공시
+			HttpSession session = request.getSession();
+			session.setAttribute("member", memberVO);
+			session.setAttribute("isLogOn", true);
+			
+			String action = (String)session.getAttribute("action"); //로그인 성공시 세션에 저장된 action을 가져온다
+			
+			session.removeAttribute("action");
+			
+			if(action!=null) { //action 값이 null이 아니면 action 값을 뷰이름으로 지정해 글쓰기 창으로 이동
+				mav.setViewName("redirect:"+action);
+			}else {
+				mav.setViewName("redirect:/member/listMembers.do");
+			}
+		}else { //로그인 실패시 다시 로그인창으로 이동
+			rAttr.addAttribute("result","loginFailed");
+			mav.setViewName("redirect:/member/loginForm.do");
+		}
+		return mav;
 	}
 
 	@Override

@@ -13,8 +13,8 @@
 		<result property="writeDate" column="writeDate" />
 		<result property="imageFileName" column="imageFileName" />
 	</resultMap>
-	
-	
+
+
 	<select id="selectAllArticlesList" resultType="articleVO">
 		<![CDATA[
 			SELECT level, articleNO, parentNO, title, content, writeDate, imageFileName, id
@@ -23,18 +23,28 @@
 				ORDER SIBLINGS BY articleNO DESC
 		]]>
 	</select>
-	
+
 	<insert id="insertNewArticle" parameterType="java.util.Map">
 		<![CDATA[
 			INSERT INTO t_board(articleNO, title, content, imageFileName, id)
 				VALUES (#{articleNO}, #{title}, #{content}, #{imageFileName}, #{id})
 		]]>
 	</insert>
-	
-	<select id="selectNewArticleNO" resultType="int">
-		SELECT MAX(articleNO)+1 FROM t_board;
+
+
+	<select id="selectArticle" resultType="articleVO"
+		parameterType="int">
+		<![CDATA[
+			SELECT * FROM t_board WHERE articleNO = #{articleNO}
+		]]>
 	</select>
-	
+
+	<select id="selectNewArticleNO" resultType="int">
+		<![CDATA[
+			SELECT nvl(max(articleNO),0)+1 FROM t_board;
+		]]>
+	</select>
+
 
 
 </mapper>

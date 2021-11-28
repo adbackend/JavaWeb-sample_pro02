@@ -29,7 +29,6 @@ request.setCharacterEncoding("UTF-8");
 		} else {
 			alert("로그인 후 글쓰기가 가능합니다.")
 			location.href = loginForm + '?action=/board/articleForm.do';
-			//${contextPath}/member/loginForm.do
 		}
 	}
 </script>
@@ -78,8 +77,15 @@ request.setCharacterEncoding("UTF-8");
 			</c:when>
 		</c:choose>
 	</table>
-	<!-- <a  class="cls1"  href="#"><p class="cls2">글쓰기</p></a> -->
-	<a class="cls1" href="javascript:fn_articleForm('${isLogOn}','${contextPath}/board/articleForm.do','${contextPath}/member/loginForm.do')">
-                                                    <p class="cls2">글쓰기</p></a>
+	<a class="cls1"
+		href="javascript:fn_articleForm('${isLogOn}','${contextPath}/board/articleForm.do','${contextPath}/member/loginForm.do')">
+		<p class="cls2">글쓰기</p>
+	</a>
+	<!-- 1.글 목록창(listArticles.jsp) 요청시 미리 세션의 isLogOn 속성을 자바스크립트 함수의 인자로 저장한다 
+		 2.글쓰기를 클릭하면 자바스크립트 함수에서 isLogOn 속성 값을 체크하여 true가 아니면 
+		 memberController로 로그인창을 요청하면서 다음에 수행할 URL을 action 값으로 전송한다.
+		 3.memberController는 action값을 세션에 저장한다
+		 4.로그인창에서 ID와 비밀번호를 입력하여 memberController로 전송한후 로그인에 성공하면 action 속성 값을 가져와서 글쓰기 창으로 바로 이동한다
+	-->
 </body>
 </html>

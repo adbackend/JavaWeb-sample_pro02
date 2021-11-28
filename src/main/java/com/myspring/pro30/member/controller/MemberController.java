@@ -1,4 +1,4 @@
-package com.myspring.pro30.member.controller;
+ package com.myspring.pro30.member.controller;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;

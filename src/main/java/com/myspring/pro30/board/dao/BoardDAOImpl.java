@@ -22,11 +22,22 @@ public class BoardDAOImpl implements BoardDAO{
 		return articleList;
 	}
 
+	
+	//글쓰기
 	@Override
-	public int insertNewArticle(Map article) throws DataAccessException {
+	public int insertNewArticle(Map articleMap) throws DataAccessException {
 		
+		int articleNO = selectNewArticleNO();
+		articleMap.put("articleNO", articleNO);
 		
-		return 0;
+		sqlSession.insert("mapper.board.insertNewArticle", articleMap);
+		
+		return articleNO;
+	}
+	
+	private int selectNewArticleNO() throws DataAccessException{
+		
+		return sqlSession.selectOne("mapper.board.selectNewArticleNO");
 	}
 
 }

@@ -9,6 +9,6 @@ public interface BoardService {
 
 	public List<ArticleVO> listArticles() throws Exception; //목록
 	
-	public int addNew(Map articleMap) throws Exception; //추가
+	public int addNewArticle(Map articleMap) throws Exception; //추가
 	
 }

@@ -23,10 +23,12 @@ public class BoardServiceImpl implements BoardService{
 		return articlesList;
 	}
 
+	//단일 이미지 추가하기
 	@Override
-	public int addNew(Map articleMap) throws Exception {
-		// TODO Auto-generated method stub
-		return 0;
+	public int addNewArticle(Map articleMap) throws Exception {
+		
+		
+		return boardDAO.insertNewArticle(articleMap);
 	}
 
 }

@@ -99,13 +99,15 @@ public class BoardControllerImpl implements BoardController{
 		System.out.println("한개 이미지 글쓰기~~~~~222");
 
 		try {
+			System.out.println("들어오긴하냐..");
 			int articleNO = boardService.addNewArticle(articleMap);
 			
+			System.out.println("아디클노값--->"+articleNO);
 			if(imageFileName!=null && imageFileName.length()!=0) {
 				File srcFile = new File(ARTICLE_IMAGE_REPO+"\\"+"temp"+"\\"+imageFileName);
 				File destDir = new File(ARTICLE_IMAGE_REPO+"\\"+articleNO);
 				
-				FileUtils.moveDirectory(srcFile, destDir);
+				FileUtils.moveFileToDirectory(srcFile, destDir,true);
 			}
 			
 			message = "<script>";
@@ -129,7 +131,7 @@ public class BoardControllerImpl implements BoardController{
 			message += "</script>";
 			
 			resEnt = new ResponseEntity(message, responseHeaders, HttpStatus.CREATED);
-			
+			e.printStackTrace();
 		}
 		System.out.println("한개 이미지 글쓰기~~~~~555555");
 

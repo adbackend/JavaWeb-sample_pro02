@@ -4,7 +4,7 @@
    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="mapper.board">
-	<resultMap id="articleResult" type="articleVO">
+	<resultMap id="articlesResult" type="articleVO">
 		<result property="level" column="level" />
 		<result property="articleNO" column="articleNO" />
 		<result property="parentNO" column="parentNO" />
@@ -12,6 +12,12 @@
 		<result property="content" column="content" />
 		<result property="writeDate" column="writeDate" />
 		<result property="imageFileName" column="imageFileName" />
+	</resultMap>
+	
+	<resultMap id="imgResult" type="imageVO">
+		<result property="imageFileNO" column="imageFileNO"/>
+		<result property="articleNO" column="articleNO"/>
+		<result property="imageFileName" column="imageFileName"/>
 	</resultMap>
 
 
@@ -41,7 +47,7 @@
 
 	<select id="selectNewArticleNO" resultType="int">
 		<![CDATA[
-			SELECT nvl(max(articleNO),0)+1 FROM t_board;
+			SELECT nvl(max(articleNO),0)+1 FROM t_board
 		]]>
 	</select>
 

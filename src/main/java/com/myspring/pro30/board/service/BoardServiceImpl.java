@@ -26,7 +26,7 @@ public class BoardServiceImpl implements BoardService{
 	//단일 이미지 추가하기
 	@Override
 	public int addNewArticle(Map articleMap) throws Exception {
-		
+		System.out.println("arrNewArticleService단~~~");
 		
 		return boardDAO.insertNewArticle(articleMap);
 	}

@@ -27,7 +27,15 @@ public class BoardDAOImpl implements BoardDAO{
 	@Override
 	public int insertNewArticle(Map articleMap) throws DataAccessException {
 		
+		System.out.println("DAOImpl단 - insertNewArticle");
+		
+		String aa = (String)articleMap.get("id");
+		System.out.println("아이디 받아오냐 "+aa);
+		
 		int articleNO = selectNewArticleNO();
+		
+		System.out.println("DAOImpl단 articleNO 값-->"+articleNO);
+		
 		articleMap.put("articleNO", articleNO);
 		
 		sqlSession.insert("mapper.board.insertNewArticle", articleMap);

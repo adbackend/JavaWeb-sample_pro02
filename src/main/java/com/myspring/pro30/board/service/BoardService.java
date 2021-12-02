@@ -11,4 +11,5 @@ public interface BoardService {
 	
 	public int addNewArticle(Map articleMap) throws Exception; //추가
 	
+	public ArticleVO viewArticle(int articleNO) throws Exception; //글 상세
 }

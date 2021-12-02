@@ -14,6 +14,7 @@ public interface BoardController {
 	
 	public ResponseEntity addNewArticle(MultipartHttpServletRequest multipartiRequest, HttpServletResponse response) throws Exception;
 	
+	public ModelAndView viewArticle(@RequestParam("articleNO") int articleNO, HttpServletRequest request, HttpServletResponse response) throws Exception;
 	
 	
 }

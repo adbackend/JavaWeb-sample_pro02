@@ -31,4 +31,13 @@ public class BoardServiceImpl implements BoardService{
 		return boardDAO.insertNewArticle(articleMap);
 	}
 
+	//글 상세(단일 파일)
+	@Override
+	public ArticleVO viewArticle(int articleNO) throws Exception {
+		
+//		ArticleVO articleVO = boardDAO.selectArticle(articleNO);
+		
+		return boardDAO.selectArticle(articleNO);
+	}
+	
 }

@@ -38,8 +38,7 @@
 	</insert>
 
 
-	<select id="selectArticle" resultType="articleVO"
-		parameterType="int">
+	<select id="selectArticle" resultType="articleVO" parameterType="int">
 		<![CDATA[
 			SELECT * FROM t_board WHERE articleNO = #{articleNO}
 		]]>
@@ -50,6 +49,7 @@
 			SELECT nvl(max(articleNO),0)+1 FROM t_board
 		]]>
 	</select>
+	
 
 
 

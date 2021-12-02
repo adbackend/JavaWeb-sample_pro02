@@ -20,6 +20,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
@@ -183,6 +184,29 @@ public class BoardControllerImpl implements BoardController{
 		
 		return mav;
 	}
+	
+	//글 상세
+	@Override
+	@RequestMapping(value="/board/viewArticle.do", method=RequestMethod.GET)
+	public ModelAndView viewArticle(@RequestParam("articleNO") int articleNO, HttpServletRequest request, HttpServletResponse response)
+			throws Exception {
+		
+		String viewName = (String)request.getAttribute("viewName");
+		
+		articleVO = boardService.viewArticle(articleNO);
+		
+		System.out.println("파일첨부"+articleVO.getImageFileName());
+		
+		System.out.println("articleVO"+articleVO.getContent());
+		
+		ModelAndView mav = new ModelAndView(viewName);
+		mav.setViewName(viewName);
+		mav.addObject("article",articleVO);
+				
+		return mav;
+	}
+	
+	
 
 }
 

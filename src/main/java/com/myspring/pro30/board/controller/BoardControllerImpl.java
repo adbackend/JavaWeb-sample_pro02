@@ -139,38 +139,6 @@ public class BoardControllerImpl implements BoardController{
 		return resEnt;
 	}
 	
-	//한개 이미지 업로드하기
-	private String upload(MultipartRequest multipartRequest) throws Exception{
-		
-		System.out.println("한개이미지 업로드~~~~~~11111");
-		String imageFileName = null;
-		
-		Iterator<String> fileNames = multipartRequest.getFileNames(); //파일 이름이 아니라 파라미터 네임(file1, file2, ..)
-		
-		while(fileNames.hasNext()) {
-			
-			String fileName = fileNames.next();
-			
-			MultipartFile mFile = multipartRequest.getFile(fileName); //파일(이름, 타입, 크기)
-			
-			imageFileName = mFile.getOriginalFilename(); //실제 업로드된 파일 이름
-			
-			// String ARTICLE_IMAGE_REPO = "C:\\board\\article_image";
-			
-			File file = new File(ARTICLE_IMAGE_REPO+"\\"+"temp"+"\\"+fileName);
-			
-			if(mFile.getSize()!=0) { //디렉토리가 존재하는지 검사
-				if(!file.exists()) { //파일이 존재하지 않으면
-					file.getParentFile().mkdirs(); //경로에 해당하는 디렉토리들 생성
-					mFile.transferTo(new File(ARTICLE_IMAGE_REPO+"\\"+"temp"+"\\"+imageFileName)); //임시로 저장된 multipartFile을 실제 파일로 전송
-
-				}
-			}
-			
-		}
-		System.out.println("upload메서드 리턴되는 imageFileName값은..?"+imageFileName);
-		return imageFileName;
-	}
 	
 	//글쓰기 폼
 	@RequestMapping(value="/board/*Form.do", method=RequestMethod.GET)
@@ -206,7 +174,109 @@ public class BoardControllerImpl implements BoardController{
 		return mav;
 	}
 	
+	//글 수정(한개 이미지)
+	@Override
+	@RequestMapping(value="/board/modArticle.do", method=RequestMethod.POST)
+	@ResponseBody
+	public ResponseEntity modArticle(MultipartHttpServletRequest multipartRequest, HttpServletResponse response)
+			throws Exception {
+		
+		multipartRequest.setCharacterEncoding("utf-8");
+		
+		Map<String, Object> articleMap = new HashMap<String, Object>();
+		
+		Enumeration enu = multipartRequest.getParameterNames(); // id, name 파라미터 값을 불러온다
+		
+		while(enu.hasMoreElements()) {
+			
+			String name = (String)enu.nextElement(); //id
+			System.out.println("name값은? ->" +name);
+			String value = multipartRequest.getParameter(name);
+			
+			articleMap.put(name, value);
+		}
+		
+		String imageFileName = upload(multipartRequest);
+		articleMap.put("imageFileName", imageFileName);
+		
+		String articleNO = (String)articleMap.get("articleNO");
+		
+		String message;
+		ResponseEntity resEnt = null;
+		
+		HttpHeaders responseHeaders = new HttpHeaders();
+		responseHeaders.add("Content-Type", "text/html; charset=utf-8");
+		
+		try {
+			boardService.modArticle(articleMap);
+			
+			if(imageFileName != null && imageFileName.length()!=0) {
+				File srcFile = new File(ARTICLE_IMAGE_REPO+"\\"+"temp"+"\\"+imageFileName);
+				File destDir = new File(ARTICLE_IMAGE_REPO+"\\"+articleNO);
+				
+				FileUtils.moveFileToDirectory(srcFile, destDir, true); //새로 첨부한 파일을 폴더로 이동
+				
+				//기존의 파일을 삭제
+				String originalFileName = (String)articleMap.get("originalFileName");
+				File oldFile = new File(ARTICLE_IMAGE_REPO+"\\"+articleNO+"\\"+originalFileName);
+				oldFile.delete();
+			}
+			
+			message = "<script>";
+			message += "alert('글을 수정했습니다.')";
+			message += " location.href='"+multipartRequest.getContextPath()+"/board/viewArticle.do?articleNo="+articleNO+"';";
+			message += "</script>";
+			
+			resEnt = new ResponseEntity(message, responseHeaders, HttpStatus.CREATED);
+			
+		}catch (Exception e) {
+			File srcFile = new File(ARTICLE_IMAGE_REPO+"\\"+"temp"+"\\"+imageFileName);
+			srcFile.delete();
+			
+			message = "<script>";
+			message += "alert('오류가 발생했습니다. 다시 시도해 주세요')";
+			message += "location.href='"+multipartRequest.getContextPath()+"/board/viewArticle.do?articleNO="+articleNO+"';";
+			message += "</script>";
+			
+			resEnt = new ResponseEntity(message, responseHeaders, HttpStatus.CREATED);
+		}
+		
+		return resEnt;
+	}
 	
+	
+	//한개 이미지 업로드하기
+	private String upload(MultipartRequest multipartRequest) throws Exception{
+		
+		System.out.println("한개이미지 업로드~~~~~~11111");
+		String imageFileName = null;
+		
+		Iterator<String> fileNames = multipartRequest.getFileNames(); //파일 이름이 아니라 파라미터 네임(file1, file2, ..)
+		
+		while(fileNames.hasNext()) {
+			
+			String fileName = fileNames.next();
+			
+			MultipartFile mFile = multipartRequest.getFile(fileName); //파일(이름, 타입, 크기)
+			
+			imageFileName = mFile.getOriginalFilename(); //실제 업로드된 파일 이름
+			
+			// String ARTICLE_IMAGE_REPO = "C:\\board\\article_image";
+			
+			File file = new File(ARTICLE_IMAGE_REPO+"\\"+"temp"+"\\"+fileName);
+			
+			if(mFile.getSize()!=0) { //디렉토리가 존재하는지 검사
+				if(!file.exists()) { //파일이 존재하지 않으면
+					file.getParentFile().mkdirs(); //경로에 해당하는 디렉토리들 생성
+					mFile.transferTo(new File(ARTICLE_IMAGE_REPO+"\\"+"temp"+"\\"+imageFileName)); //임시로 저장된 multipartFile을 실제 파일로 전송
+					
+				}
+			}
+			
+		}
+		System.out.println("upload메서드 리턴되는 imageFileName값은..?"+imageFileName);
+		return imageFileName;
+	}
 
 }
 

@@ -55,5 +55,12 @@ public class BoardDAOImpl implements BoardDAO{
 		
 		return sqlSession.selectOne("mapper.board.selectArticle",articleNO);
 	}
+	
+	//글 수정(한개 이미지)
+	@Override
+	public void updateArticle(Map articleMap) throws DataAccessException {
+
+		sqlSession.update("mapper.board.updateArticle",articleMap);
+	}
 
 }

@@ -50,6 +50,14 @@
 		]]>
 	</select>
 	
+	<update id="updateArticle" parameterType="java.util.Map">
+		UPDATE t_board SET title=#{title}, content=#{content}
+			<if test="imageFile!='' and imageFileName!=null ">
+				, imageFileName=#{imageFileName}
+			</if>
+			WHERE articleNO = #{articleNO}
+	</update>
+	
 
 
 

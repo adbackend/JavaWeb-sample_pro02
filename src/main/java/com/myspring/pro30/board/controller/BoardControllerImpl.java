@@ -278,6 +278,47 @@ public class BoardControllerImpl implements BoardController{
 		System.out.println("upload메서드 리턴되는 imageFileName값은..?"+imageFileName);
 		return imageFileName;
 	}
+	
+	@Override
+	@RequestMapping(value="/board/removeArticle.do", method=RequestMethod.POST)
+	@ResponseBody
+	public ResponseEntity removeArticle(@RequestParam("articleNO") int articleNO, HttpServletRequest request, HttpServletResponse response)
+			throws Exception {
+		
+		response.setContentType("text/html; charset=utf-8");
+		
+		System.out.println("글삭제 articleNO값 넘어오냐?...->"+articleNO);
+		String message ;
+		
+		ResponseEntity resEnt = null;
+		HttpHeaders responseHeaders = new HttpHeaders();
+		responseHeaders.add("Content-Type", "text/html; charset=utf-8");
+		
+		try {
+			boardService.removeArticle(articleNO);
+			
+			File destDir = new File(ARTICLE_IMAGE_REPO+"\\"+articleNO);
+			FileUtils.deleteDirectory(destDir);
+			
+			message = "<script>";
+			message += " alert('글을 삭제했습니다.');";
+			message += " location.href='"+request.getContextPath()+"/board/listArticles.do';";
+			message +=" </script>";
+			
+			resEnt = new ResponseEntity(message, responseHeaders, HttpStatus.CREATED);
+			
+		}catch (Exception e) {
+			
+			message = "<script>";
+			message += "alert('작업중 오류가 발생 했습니다. 다시 시도해 주세요');";
+			message += "location.href='"+request.getContextPath()+"/board/listArticles.do';";
+			message += "</script>";
+			
+			resEnt = new ResponseEntity(message, responseHeaders, HttpStatus.CREATED);
+			e.printStackTrace();
+		}
+		return resEnt;
+	}
 
 }
 

@@ -58,6 +58,16 @@
 			WHERE articleNO = #{articleNO}
 	</update>
 	
+	<delete id="deleteArticle" parameterType="int">
+		<![CDATA[
+			DELETE FROM t_board
+				WHERE articleNO in (
+					SELECT articleNO FROM t_board
+						START WITH articleNO = #{articleNO}
+						CONNECT BY PRIOR articleNO = parentNO )
+		]]>
+	</delete>
+	
 
 
 

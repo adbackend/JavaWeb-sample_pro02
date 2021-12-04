@@ -16,4 +16,6 @@ public interface BoardDAO {
 	public ArticleVO selectArticle(int articleNO) throws DataAccessException; //글 상세
 	
 	public void updateArticle(Map articleMap) throws DataAccessException; // 글 수정(한개 이미지)
+	
+	public void deleteArticle(int articleNO) throws DataAccessException; //글 삭제
 }

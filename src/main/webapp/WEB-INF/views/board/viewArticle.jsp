@@ -46,20 +46,23 @@
 		 obj.submit();
 	 }
 	 
-	 function fn_remove_article(url,articleNO){
+	
+	 function fn_remove_article(url, articleNO){
 		 var form = document.createElement("form");
-		 form.setAttribute("method", "post");
-		 form.setAttribute("action", url);
-	     var articleNOInput = document.createElement("input");
-	     articleNOInput.setAttribute("type","hidden");
-	     articleNOInput.setAttribute("name","articleNO");
-	     articleNOInput.setAttribute("value", articleNO);
 		 
-	     form.appendChild(articleNOInput);
-	     document.body.appendChild(form);
-	     form.submit();
-	 
+		 form.setAttribute("method","post");
+		 form.setAttribute("action",url);
+		 
+		 var articleNOInput = document.createElement("input");
+		 articleNOInput.setAttribute("type","hidden");
+		 articleNOInput.setAttribute("name","articleNO");
+		 articleNOInput.setAttribute("value",articleNO);
+		 
+		 form.appendChild(articleNOInput);
+		 document.body.appendChild(form);
+		 form.submit();
 	 }
+	 
 	 
 	 function fn_reply_form(url, parentNO){
 		 var form = document.createElement("form");

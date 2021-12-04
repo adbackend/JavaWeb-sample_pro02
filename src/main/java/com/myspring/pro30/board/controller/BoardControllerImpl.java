@@ -200,7 +200,7 @@ public class BoardControllerImpl implements BoardController{
 		articleMap.put("imageFileName", imageFileName);
 		
 		String articleNO = (String)articleMap.get("articleNO");
-		
+		System.out.println("수정할 글 번호 articleNO....?"+articleNO);
 		String message;
 		ResponseEntity resEnt = null;
 		
@@ -218,13 +218,14 @@ public class BoardControllerImpl implements BoardController{
 				
 				//기존의 파일을 삭제
 				String originalFileName = (String)articleMap.get("originalFileName");
+				System.out.println("기준파일 이름....?"+originalFileName);
 				File oldFile = new File(ARTICLE_IMAGE_REPO+"\\"+articleNO+"\\"+originalFileName);
 				oldFile.delete();
 			}
 			
 			message = "<script>";
-			message += "alert('글을 수정했습니다.')";
-			message += " location.href='"+multipartRequest.getContextPath()+"/board/viewArticle.do?articleNo="+articleNO+"';";
+			message += "alert('글을 수정했습니다.');";
+			message += " location.href='"+multipartRequest.getContextPath()+"/board/viewArticle.do?articleNO="+articleNO+"';";
 			message += "</script>";
 			
 			resEnt = new ResponseEntity(message, responseHeaders, HttpStatus.CREATED);
